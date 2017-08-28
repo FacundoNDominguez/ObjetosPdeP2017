@@ -3,7 +3,9 @@
 object berghain {
 	var patova 
 	
-	
+	method patova(nuevoPatova){
+		patova = nuevoPatova
+	}
 	method patova() {
 		return patova
 	}
@@ -23,13 +25,23 @@ object vosLukaz {
 	method edad(){
 		return edad
 	}
+	method energia(){
+		return energia
+	}
 	method cambiarDePista(nuevaPista){
 		if (berghain.patova().dejarPasar(self)){
 			pista.quitarPersona(self)
 			nuevaPista.agregarPersona(self)
 			pista = nuevaPista
-		} else {pista = NULL}
+		} else {pista = null}
 	}
+	
+	method bailar(nuevaEnergia,nuevaDiversion){
+		energia += nuevaEnergia
+		diversion += nuevaDiversion
+	}
+	
+	
 }
 
 object bianker {
@@ -45,13 +57,20 @@ object bianker {
 	method edad(){
 		return edad
 	}
+	method energia(){
+		return energia
+	}
 	method cambiarDePista(nuevaPista){
 		if (berghain.patova().dejarPasar(self)){
 			pista.quitarPersona(self)
 			nuevaPista.agregarPersona(self)
 			pista = nuevaPista
-		} else {pista = NULL}
+		} else {pista = null}
 	}
+	method bailar(nuevaEnergia,nuevaDiversion){
+		energia += nuevaEnergia
+		diversion += nuevaDiversion
+	}	
 }
 
 object gonzen {
@@ -67,13 +86,20 @@ object gonzen {
 	method edad(){
 		return edad
 	}
+	method energia(){
+		return energia
+	}
 	method cambiarDePista(nuevaPista){
 		if (berghain.patova().dejarPasar(self)){
 			pista.quitarPersona(self)
 			nuevaPista.agregarPersona(self)
 			pista = nuevaPista
-		} else {pista = NULL}
+		} else {pista = null}
 	}
+	method bailar(nuevaEnergia,nuevaDiversion){
+		energia += nuevaEnergia
+		diversion += nuevaDiversion
+	}	
 }
 
 //Pavota
@@ -100,15 +126,36 @@ object gushtavotruccensen {
 //DJs
 
 object dixon {
+	const energia = -60
+	const diversion = 120
 	
+	method obtenerEnergia(persona){
+		return energia
+	}
+	method obtenerDiversion(persona){
+		return diversion
+	}
 }
 
 object marcelDettman {
-	
+	const diversion = 1000
+	method obtenerEnergia(persona){
+		return -(persona.energia())
+	}
+	method obtenerDiversion(persona){
+		return diversion
+	}
 }
 
 object tommyMunioz {
-	
+	const energia =-80
+	const diversion = 0
+	method obtenerEnergia(persona){
+		return energia
+	}
+	method obtenerDiversion(persona){
+		return diversion
+	}
 }
 
 
@@ -123,6 +170,10 @@ object mainRoom{
 	method agregarPersona(persona){
 		audiencia.add(persona)
 	}
+	
+	method pasarMusica(){
+		audiencia.map({persona => persona.bailar(-40,30)})
+	}
 }
 
 object panoramaBar {
@@ -135,6 +186,9 @@ object panoramaBar {
 	method agregarPersona(persona){
 		audiencia.add(persona)
 	}
+	method pasarMusica(){
+		audiencia.map({persona => persona.bailar(dj.obtenerEnergia(persona),dj.obtenerDiversion(persona))})
+	}
 }
 
 object darkRoom {
@@ -145,6 +199,9 @@ object darkRoom {
 	}
 	method agregarPersona(persona){
 		audiencia.add(persona)
+	}
+	method pasarMusica(){
+		
 	}
 	
 }
